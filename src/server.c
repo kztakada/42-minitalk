@@ -6,7 +6,7 @@
 /*   By: katakada <katakada@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/05 20:43:50 by katakada          #+#    #+#             */
-/*   Updated: 2024/12/05 21:07:05 by katakada         ###   ########.fr       */
+/*   Updated: 2024/12/08 20:05:49 by katakada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,10 +17,13 @@ static void	sig_handler(int signum)
 	static unsigned char	utf8_char;
 	static int				bit_count;
 
-	if (signum == SIGUSR1)
-		utf8_char |= 1 << bit_count;
 	if (signum == SIGUSR1 || signum == SIGUSR2)
+	{
+		utf8_char <<= 1;
 		bit_count++;
+	}
+	if (signum == SIGUSR1)
+		utf8_char += 1;
 	if (bit_count == 8)
 	{
 		if (utf8_char != '\0')
