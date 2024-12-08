@@ -6,7 +6,7 @@
 /*   By: katakada <katakada@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/05 20:43:50 by katakada          #+#    #+#             */
-/*   Updated: 2024/12/08 20:05:49 by katakada         ###   ########.fr       */
+/*   Updated: 2024/12/08 22:26:25 by katakada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ static void	sig_handler(int signum)
 		utf8_char <<= 1;
 		bit_count++;
 	}
-	if (signum == SIGUSR1)
+	if (signum == SIGUSR2)
 		utf8_char += 1;
 	if (bit_count == 8)
 	{
