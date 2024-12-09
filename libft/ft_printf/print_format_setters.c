@@ -6,7 +6,7 @@
 /*   By: katakada <katakada@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/10 22:16:31 by katakada          #+#    #+#             */
-/*   Updated: 2024/10/16 19:07:25 by katakada         ###   ########.fr       */
+/*   Updated: 2024/12/09 19:56:16 by katakada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,12 +54,11 @@ void	set_format_flags(const char **format, t_flags *flags)
 		flags->is_space = 0;
 }
 
-void	set_format_field_size(const char **format, t_flags *flags,
-		va_list *args)
+void	set_format_field_size(const char **format, t_flags *flags, va_list args)
 {
 	if (**format == '*')
 	{
-		flags->blank_size = va_arg(*args, int);
+		flags->blank_size = va_arg(args, int);
 		(*format)++;
 	}
 	else
@@ -70,7 +69,7 @@ void	set_format_field_size(const char **format, t_flags *flags,
 	}
 }
 
-void	set_format_precision(const char **format, t_flags *flags, va_list *args)
+void	set_format_precision(const char **format, t_flags *flags, va_list args)
 {
 	(*format)++;
 	if (is_number_type(flags->type))
@@ -97,8 +96,7 @@ void	set_format_precision(const char **format, t_flags *flags, va_list *args)
 		flags->is_zero = 0;
 }
 
-void	set_format_flags_loop(const char **format, t_flags *flags,
-		va_list *args)
+void	set_format_flags_loop(const char **format, t_flags *flags, va_list args)
 {
 	int	is_search_end;
 

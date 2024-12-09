@@ -6,7 +6,7 @@
 /*   By: katakada <katakada@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/10 15:11:34 by katakada          #+#    #+#             */
-/*   Updated: 2024/12/02 00:02:15 by katakada         ###   ########.fr       */
+/*   Updated: 2024/12/09 19:52:07 by katakada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@
 #endif
 
 int	print_format_or_char(int fd, const char **format, t_flags *flags,
-		va_list *args)
+		va_list args)
 {
 	int	count;
 
@@ -61,7 +61,7 @@ int	ft_vdprintf(int fd, const char *format, va_list args)
 	{
 		if (ISLINUX == 1 && *(format) == '%' && *(format + 1) == '\0')
 			return (print_last_percent(&format, &flags, fd, count));
-		cnt_tmp = print_format_or_char(fd, &format, &flags, &args);
+		cnt_tmp = print_format_or_char(fd, &format, &flags, args);
 		if (cnt_tmp == -2)
 			break ;
 		if (cnt_tmp == -1)

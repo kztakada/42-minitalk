@@ -6,7 +6,7 @@
 /*   By: katakada <katakada@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/10 22:41:28 by katakada          #+#    #+#             */
-/*   Updated: 2024/10/12 19:57:21 by katakada         ###   ########.fr       */
+/*   Updated: 2024/12/09 19:56:16 by katakada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,11 +36,11 @@ int	ascii_to_field_size(const char *str_pos)
 	return ((int)int_value);
 }
 
-void	set_precision_number(const char **format, t_flags *flags, va_list *args)
+void	set_precision_number(const char **format, t_flags *flags, va_list args)
 {
 	if (**format == '*')
 	{
-		flags->precision = va_arg(*args, int);
+		flags->precision = va_arg(args, int);
 		(*format)++;
 	}
 	else

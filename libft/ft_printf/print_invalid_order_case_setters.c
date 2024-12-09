@@ -6,7 +6,7 @@
 /*   By: katakada <katakada@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/16 17:42:32 by katakada          #+#    #+#             */
-/*   Updated: 2024/10/16 17:42:33 by katakada         ###   ########.fr       */
+/*   Updated: 2024/12/09 19:56:16 by katakada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ void	force_set_format_flags(const char **format, t_flags *flags)
 		flags->is_space = 0;
 }
 
-void	force_set_field_size(const char **format, t_flags *flags, va_list *args)
+void	force_set_field_size(const char **format, t_flags *flags, va_list args)
 {
 	if (ft_isdigit(**format))
 	{
@@ -45,12 +45,12 @@ void	force_set_field_size(const char **format, t_flags *flags, va_list *args)
 	}
 	if (**format == '*')
 	{
-		flags->blank_size = va_arg(*args, int);
+		flags->blank_size = va_arg(args, int);
 		(*format)++;
 	}
 }
 
-int	force_set_precision(const char **format, t_flags *flags, va_list *args)
+int	force_set_precision(const char **format, t_flags *flags, va_list args)
 {
 	if (**format == '.')
 	{
@@ -64,7 +64,7 @@ int	force_set_precision(const char **format, t_flags *flags, va_list *args)
 		}
 		if (**format == '*')
 		{
-			flags->precision = va_arg(*args, int);
+			flags->precision = va_arg(args, int);
 			(*format)++;
 		}
 		return (1);

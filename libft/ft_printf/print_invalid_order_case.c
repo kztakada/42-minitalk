@@ -6,7 +6,7 @@
 /*   By: katakada <katakada@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/14 18:29:29 by katakada          #+#    #+#             */
-/*   Updated: 2024/10/16 18:14:36 by katakada         ###   ########.fr       */
+/*   Updated: 2024/12/09 19:54:12 by katakada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ int	force_print_until_last_char(const char **format, t_flags *flags, int fd,
 	return (count + cnt_tmp);
 }
 
-int	print_invalid_order_case(const char **format, t_flags *flags, va_list *args,
+int	print_invalid_order_case(const char **format, t_flags *flags, va_list args,
 		int fd)
 {
 	int	count;

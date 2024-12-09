@@ -6,7 +6,7 @@
 /*   By: katakada <katakada@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/18 20:13:00 by katakada          #+#    #+#             */
-/*   Updated: 2024/10/16 19:37:02 by katakada         ###   ########.fr       */
+/*   Updated: 2024/12/09 19:56:16 by katakada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,32 +17,30 @@
 # define ISLINUX 0
 #endif
 
-int	print_by_format_type(int fd, t_flags *flags, va_list *args)
+int	print_by_format_type(int fd, t_flags *flags, va_list args)
 {
 	if (flags->type == 'c')
-		return (print_char(va_arg(*args, int), flags, fd));
+		return (print_char(va_arg(args, int), flags, fd));
 	if (flags->type == 's')
-		return (print_str(va_arg(*args, const char *), flags, fd));
+		return (print_str(va_arg(args, const char *), flags, fd));
 	if (flags->type == 'd' || flags->type == 'i')
-		return (print_int(va_arg(*args, int), flags, fd));
+		return (print_int(va_arg(args, int), flags, fd));
 	if (flags->type == 'x')
-		return (print_hex_base(va_arg(*args, unsigned int), flags, HEX_LOWER,
+		return (print_hex_base(va_arg(args, unsigned int), flags, HEX_LOWER,
 				fd));
 	if (flags->type == 'X')
-		return (print_hex_base(va_arg(*args, unsigned int), flags, HEX_UPPER,
+		return (print_hex_base(va_arg(args, unsigned int), flags, HEX_UPPER,
 				fd));
 	if (flags->type == 'p')
-		return (print_ptr((unsigned long long)va_arg(*args, void *), flags,
-				fd));
+		return (print_ptr((unsigned long long)va_arg(args, void *), flags, fd));
 	if (flags->type == 'u')
-		return (print_u_int(va_arg(*args, unsigned int), flags, fd));
+		return (print_u_int(va_arg(args, unsigned int), flags, fd));
 	if (flags->type == '%')
 		return (print_percent(flags, fd));
 	return (0);
 }
 
-int	set_format_type_and_flags(const char **format, t_flags *flags,
-		va_list *args)
+int	set_format_type_and_flags(const char **format, t_flags *flags, va_list args)
 {
 	set_format_type(format, flags);
 	if (ISLINUX == 1 && is_invalid_order_case(format, flags->type))
@@ -54,7 +52,7 @@ int	set_format_type_and_flags(const char **format, t_flags *flags,
 	return (0);
 }
 
-int	print_format(const char **format, t_flags *flags, va_list *args, int fd)
+int	print_format(const char **format, t_flags *flags, va_list args, int fd)
 {
 	int	count;
 	int	is_not_format;
