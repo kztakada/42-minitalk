@@ -6,11 +6,20 @@
 /*   By: katakada <katakada@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/05 20:43:44 by katakada          #+#    #+#             */
-/*   Updated: 2024/12/08 22:48:06 by katakada         ###   ########.fr       */
+/*   Updated: 2024/12/09 21:19:52 by katakada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minitalk.h"
+
+void	error_exit(char *format, char *message)
+{
+	if (message)
+		ft_printf(format);
+	else
+		ft_printf(format, message);
+	exit(1);
+}
 
 static void	send_message(int pid, char *message)
 {
@@ -43,23 +52,17 @@ int	main(int argc, char *argv[])
 	int	pid;
 
 	if (argc != 3)
-	{
-		ft_printf("Error: Argments are invalid (Usage: %s [PID] [MESSAGE])\n",
+		error_exit("Error: Argments are invalid (Usage: %s [PID] [MESSAGE])\n",
 			argv[0]);
-		exit(1);
-	}
-	pid = ft_atoi(argv[1]);
-	if (pid < 100 || pid > 4194304)
-	{
-		ft_printf("Error: %s is invalid PID (Available PID: 100~4194304)\n",
+	if (!is_int_str(argv[1]))
+		error_exit("Error: %s is invalid PID (Available PID: 2~4194304)\n",
 			argv[1]);
-		exit(1);
-	}
+	pid = ft_atoi(argv[1]);
+	if (pid <= 1 || pid > 4194304)
+		error_exit("Error: %s is invalid PID (Available PID: 2~4194304)\n",
+			argv[1]);
 	if (ft_strlen(argv[2]) == 0)
-	{
-		ft_printf("Error: Message is empty\n");
-		exit(1);
-	}
+		error_exit("Error: Message is empty\n", NULL);
 	send_message(pid, argv[2]);
 	return (0);
 }

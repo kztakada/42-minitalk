@@ -6,7 +6,7 @@
 #    By: katakada <katakada@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/12/01 23:05:17 by katakada          #+#    #+#              #
-#    Updated: 2024/12/05 21:08:52 by katakada         ###   ########.fr        #
+#    Updated: 2024/12/09 21:05:04 by katakada         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -28,6 +28,8 @@ SERVER_OBJ		=	$(OBJS_PATH)server.o
 CLIENT			=	client
 CLIENT_OBJ		=	$(OBJS_PATH)client.o
 
+UTILS_OBJ		=	$(OBJS_PATH)is_int_str.o
+
 
 ISBOUNS = 0
 
@@ -43,8 +45,8 @@ $(NAME): $(SERVER) $(CLIENT)
 $(SERVER): $(SERVER_OBJ) $(LIBFT)
 	$(CC) $(CFLAGS) $(SERVER_OBJ) $(LIBFT) -o $(SERVER)
 
-$(CLIENT): $(CLIENT_OBJ) $(LIBFT)
-	$(CC) $(CFLAGS) $(CLIENT_OBJ) $(LIBFT) -o $(CLIENT)
+$(CLIENT): $(CLIENT_OBJ) $(LIBFT) $(UTILS_OBJ)
+	$(CC) $(CFLAGS) $(CLIENT_OBJ) $(UTILS_OBJ) $(LIBFT) -o $(CLIENT)
 
 $(OBJS_PATH)%.o : $(SRCS_PATH)%.c
 	mkdir -p $(@D)

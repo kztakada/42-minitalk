@@ -6,7 +6,7 @@
 /*   By: katakada <katakada@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/01 23:04:28 by katakada          #+#    #+#             */
-/*   Updated: 2024/12/08 22:31:06 by katakada         ###   ########.fr       */
+/*   Updated: 2024/12/09 20:58:00 by katakada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,10 @@
 # endif
 
 # include "../libft/includes/libft.h"
+# include <limits.h>
 # include <signal.h>
 # include <stdlib.h>
 # include <unistd.h>
 
+int	is_int_str(char *str);
 #endif
