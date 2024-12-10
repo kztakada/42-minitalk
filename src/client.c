@@ -6,7 +6,7 @@
 /*   By: katakada <katakada@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/05 20:43:44 by katakada          #+#    #+#             */
-/*   Updated: 2024/12/09 21:19:52 by katakada         ###   ########.fr       */
+/*   Updated: 2024/12/10 20:39:52 by katakada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 void	error_exit(char *format, char *message)
 {
-	if (message)
+	if (message == NULL)
 		ft_printf(format);
 	else
 		ft_printf(format, message);
@@ -52,7 +52,7 @@ int	main(int argc, char *argv[])
 	int	pid;
 
 	if (argc != 3)
-		error_exit("Error: Argments are invalid (Usage: %s [PID] [MESSAGE])\n",
+		error_exit("Error: Invalid Argments (Usage: %s [PID] [MESSAGE])\n",
 			argv[0]);
 	if (!is_int_str(argv[1]))
 		error_exit("Error: %s is invalid PID (Available PID: 2~4194304)\n",
