@@ -6,7 +6,7 @@
 #    By: katakada <katakada@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/12/01 23:05:17 by katakada          #+#    #+#              #
-#    Updated: 2024/12/10 20:43:29 by katakada         ###   ########.fr        #
+#    Updated: 2024/12/10 22:56:41 by katakada         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -34,7 +34,6 @@ UTILS_OBJ		=	$(OBJS_PATH)utils.o
 ISBOUNS = 0
 
 ifeq ($(ISBOUNS), 1)
-	SRCS_PATH	=	src/bonus/
 	SERVER_OBJ	=	$(OBJS_PATH)server_bonus.o
 	CLIENT_OBJ	=	$(OBJS_PATH)client_bonus.o
 endif
