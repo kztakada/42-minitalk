@@ -6,20 +6,11 @@
 /*   By: katakada <katakada@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/05 20:43:44 by katakada          #+#    #+#             */
-/*   Updated: 2024/12/10 20:39:52 by katakada         ###   ########.fr       */
+/*   Updated: 2024/12/10 20:43:33 by katakada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minitalk.h"
-
-void	error_exit(char *format, char *message)
-{
-	if (message == NULL)
-		ft_printf(format);
-	else
-		ft_printf(format, message);
-	exit(1);
-}
 
 static void	send_message(int pid, char *message)
 {

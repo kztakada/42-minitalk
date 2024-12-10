@@ -1,16 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   is_int_str.c                                       :+:      :+:    :+:   */
+/*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: katakada <katakada@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/12/09 20:56:06 by katakada          #+#    #+#             */
-/*   Updated: 2024/12/10 20:23:11 by katakada         ###   ########.fr       */
+/*   Created: 2024/12/10 20:44:18 by katakada          #+#    #+#             */
+/*   Updated: 2024/12/10 20:44:18 by katakada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minitalk.h"
+
+void	error_exit(char *format, char *message)
+{
+	if (message == NULL)
+		ft_printf(format);
+	else
+		ft_printf(format, message);
+	exit(1);
+}
 
 int	is_all_digit_char(char *str)
 {

@@ -6,7 +6,7 @@
 #    By: katakada <katakada@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/12/01 23:05:17 by katakada          #+#    #+#              #
-#    Updated: 2024/12/09 21:05:04 by katakada         ###   ########.fr        #
+#    Updated: 2024/12/10 20:43:29 by katakada         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -28,7 +28,7 @@ SERVER_OBJ		=	$(OBJS_PATH)server.o
 CLIENT			=	client
 CLIENT_OBJ		=	$(OBJS_PATH)client.o
 
-UTILS_OBJ		=	$(OBJS_PATH)is_int_str.o
+UTILS_OBJ		=	$(OBJS_PATH)utils.o
 
 
 ISBOUNS = 0
