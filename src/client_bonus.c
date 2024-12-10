@@ -6,13 +6,13 @@
 /*   By: katakada <katakada@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/05 20:43:32 by katakada          #+#    #+#             */
-/*   Updated: 2024/12/11 00:56:29 by katakada         ###   ########.fr       */
+/*   Updated: 2024/12/11 02:54:53 by katakada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minitalk.h"
 
-static volatile sig_atomic_t	is_server_ok_global;
+static volatile sig_atomic_t	g_is_server_ok;
 
 static void	send_message(int pid, char *message)
 {
@@ -21,17 +21,17 @@ static void	send_message(int pid, char *message)
 	int	bit;
 
 	i = 0;
-	is_server_ok_global = 1;
+	g_is_server_ok = 1;
 	while (1)
 	{
 		bit_count = 1;
 		while (bit_count <= 8)
 		{
-			while (is_server_ok_global == -1)
+			while (g_is_server_ok == -1)
 				pause();
-			if (is_server_ok_global == 0)
-				exit(1);
-			is_server_ok_global = -1;
+			if (g_is_server_ok == 0)
+				return (exit(1));
+			g_is_server_ok = -1;
 			usleep(10);
 			bit = (message[i] >> (8 - bit_count)) & 1;
 			if (bit == 0)
@@ -48,17 +48,12 @@ static void	send_message(int pid, char *message)
 
 static void	sig_handler(int signum, siginfo_t *siginfo, void *context)
 {
-	// static int	i = 0;
 	(void)context;
 	(void)siginfo;
-	// ft_printf("Ping %d\n", i++);
-	// ft_printf("siginfo->si_pid: %d\n", siginfo->si_pid);
-	// ft_printf("signum: %d\n", signum);
 	if (signum == SIGUSR1)
-		is_server_ok_global = 1;
+		g_is_server_ok = 1;
 	if (signum == SIGUSR2)
-		is_server_ok_global = 0;
-	// ft_printf("Pon!\n");
+		g_is_server_ok = 0;
 }
 
 int	main(int argc, char *argv[])
@@ -66,7 +61,6 @@ int	main(int argc, char *argv[])
 	int					pid;
 	struct sigaction	s_action;
 
-	ft_printf("bornus build\n");
 	if (argc != 3)
 		error_exit("Error: Invalid Argments (Usage: %s [PID] [MESSAGE])\n",
 			argv[0]);
