@@ -6,7 +6,7 @@
 /*   By: katakada <katakada@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/05 20:43:38 by katakada          #+#    #+#             */
-/*   Updated: 2024/12/11 03:01:58 by katakada         ###   ########.fr       */
+/*   Updated: 2024/12/11 03:55:02 by katakada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,54 +14,59 @@
 
 static volatile sig_atomic_t	g_client_pid;
 
+static void	init_bit_count(int *bit_count, unsigned char *utf8_char)
+{
+	*bit_count = 0;
+	utf8_char[0] = 0;
+	utf8_char[1] = 0;
+	utf8_char[2] = 0;
+	utf8_char[3] = 0;
+}
+
+static int	get_bit_size(unsigned char *utf8_char)
+{
+	if ((utf8_char[0] & 0xF0) == 0xF0)
+		return (32);
+	else if ((utf8_char[0] & 0xE0) == 0xE0)
+		return (24);
+	else if ((utf8_char[0] & 0xC0) == 0xC0)
+		return (16);
+	else
+		return (8);
+}
+
+static void	sig_opelation(int signum, unsigned char *utf8_char, int *bit_count)
+{
+	int	utf_index;
+
+	utf_index = *bit_count / 8;
+	if (signum == SIGUSR1 || signum == SIGUSR2)
+	{
+		utf8_char[utf_index] <<= 1;
+		(*bit_count)++;
+	}
+	if (signum == SIGUSR2)
+		utf8_char[utf_index] += 1;
+}
+
 static void	sig_handler(int signum, siginfo_t *siginfo, void *context)
 {
 	static unsigned char	utf8_char[4];
-	int						utf_index;
 	static int				bit_count;
 	int						bit_size;
 	int						i;
 
 	(void)context;
 	if (g_client_pid != siginfo->si_pid && siginfo->si_pid != 0)
-	{
-		if (g_client_pid != 0)
-			kill(siginfo->si_pid, SIGUSR2);
-		bit_count = 0;
-		utf8_char[0] = 0;
-		utf8_char[1] = 0;
-		utf8_char[2] = 0;
-		utf8_char[3] = 0;
-	}
-	utf_index = bit_count / 8;
-	if (signum == SIGUSR1 || signum == SIGUSR2)
-	{
-		utf8_char[utf_index] <<= 1;
-		bit_count++;
-	}
-	if (signum == SIGUSR2)
-		utf8_char[utf_index] += 1;
-	if ((utf8_char[0] & 0xF0) == 0xF0)
-		bit_size = 32;
-	else if ((utf8_char[0] & 0xE0) == 0xE0)
-		bit_size = 24;
-	else if ((utf8_char[0] & 0xC0) == 0xC0)
-		bit_size = 16;
-	else
-		bit_size = 8;
+		init_bit_count(&bit_count, utf8_char);
+	sig_opelation(signum, utf8_char, &bit_count);
+	bit_size = get_bit_size(utf8_char);
 	if (bit_count == bit_size)
 	{
 		i = 0;
 		while (utf8_char[i] != '\0')
-		{
-			write(STDOUT_FILENO, &utf8_char[i], 1);
-			i++;
-		}
-		bit_count = 0;
-		utf8_char[0] = 0;
-		utf8_char[1] = 0;
-		utf8_char[2] = 0;
-		utf8_char[3] = 0;
+			write(STDOUT_FILENO, &utf8_char[i++], 1);
+		init_bit_count(&bit_count, utf8_char);
 	}
 	usleep(100);
 	if (siginfo->si_pid != 0)
