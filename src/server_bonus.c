@@ -6,7 +6,7 @@
 /*   By: katakada <katakada@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/05 20:43:38 by katakada          #+#    #+#             */
-/*   Updated: 2024/12/10 22:58:42 by katakada         ###   ########.fr       */
+/*   Updated: 2024/12/11 01:46:00 by katakada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,11 @@ static void	sig_handler(int signum, siginfo_t *siginfo, void *context)
 	static int				bit_count;
 
 	(void)context;
+	if (global_client_pid != siginfo->si_pid && siginfo->si_pid != 0)
+	{
+		bit_count = 0;
+		utf8_char = 0;
+	}
 	if (signum == SIGUSR1 || signum == SIGUSR2)
 	{
 		utf8_char <<= 1;
@@ -34,7 +39,7 @@ static void	sig_handler(int signum, siginfo_t *siginfo, void *context)
 		bit_count = 0;
 		utf8_char = 0;
 	}
-	usleep(10);
+	usleep(100);
 	if (siginfo->si_pid != 0)
 		global_client_pid = siginfo->si_pid;
 	kill(global_client_pid, SIGUSR1);
