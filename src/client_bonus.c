@@ -6,26 +6,33 @@
 /*   By: katakada <katakada@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/05 20:43:32 by katakada          #+#    #+#             */
-/*   Updated: 2024/12/11 04:03:55 by katakada         ###   ########.fr       */
+/*   Updated: 2024/12/11 15:16:14 by katakada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minitalk.h"
 
-static volatile sig_atomic_t	g_is_server_ok;
+static volatile sig_atomic_t	g_server_pid;
 
 static void	bit_8_opelation(int pid, char *message, int i)
 {
 	int	bit_count;
 	int	bit;
+	int	time_count;
 
 	bit_count = 1;
+	time_count = 0;
 	while (bit_count <= 8)
 	{
-		while (g_is_server_ok == -1)
-			pause();
-		g_is_server_ok = -1;
-		usleep(10);
+		while (g_server_pid < 0)
+		{
+			usleep(100);
+			time_count++;
+			if (time_count > 10000)
+				error_exit("Error: Server is not responding\n", NULL);
+		}
+		g_server_pid *= -1;
+		// usleep(10);
 		bit = (message[i] >> (8 - bit_count)) & 1;
 		if (bit == 0)
 			kill(pid, SIGUSR1);
@@ -40,7 +47,7 @@ static void	send_message(int pid, char *message)
 	int	i;
 
 	i = 0;
-	g_is_server_ok = 1;
+	g_server_pid = pid;
 	while (1)
 	{
 		bit_8_opelation(pid, message, i);
@@ -54,8 +61,9 @@ static void	sig_handler(int signum, siginfo_t *siginfo, void *context)
 {
 	(void)context;
 	(void)siginfo;
-	if (signum == SIGUSR1)
-		g_is_server_ok = 1;
+	if ((siginfo->si_pid == (g_server_pid * -1) || siginfo->si_pid == 0)
+		&& signum == SIGUSR1)
+		g_server_pid *= -1;
 }
 
 int	main(int argc, char *argv[])

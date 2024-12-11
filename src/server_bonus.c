@@ -6,7 +6,7 @@
 /*   By: katakada <katakada@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/05 20:43:38 by katakada          #+#    #+#             */
-/*   Updated: 2024/12/11 03:55:02 by katakada         ###   ########.fr       */
+/*   Updated: 2024/12/11 15:16:19 by katakada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,7 @@ static void	sig_handler(int signum, siginfo_t *siginfo, void *context)
 			write(STDOUT_FILENO, &utf8_char[i++], 1);
 		init_bit_count(&bit_count, utf8_char);
 	}
-	usleep(100);
+	// usleep(100);
 	if (siginfo->si_pid != 0)
 		g_client_pid = siginfo->si_pid;
 	kill(g_client_pid, SIGUSR1);
