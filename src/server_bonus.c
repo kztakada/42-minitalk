@@ -6,7 +6,7 @@
 /*   By: katakada <katakada@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/05 20:43:38 by katakada          #+#    #+#             */
-/*   Updated: 2024/12/11 15:16:19 by katakada         ###   ########.fr       */
+/*   Updated: 2024/12/11 20:36:55 by katakada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ static void	sig_opelation(int signum, unsigned char *utf8_char, int *bit_count)
 
 static void	sig_handler(int signum, siginfo_t *siginfo, void *context)
 {
-	static unsigned char	utf8_char[4];
+	static unsigned char	utf8_char[5];
 	static int				bit_count;
 	int						bit_size;
 	int						i;
@@ -68,10 +68,10 @@ static void	sig_handler(int signum, siginfo_t *siginfo, void *context)
 			write(STDOUT_FILENO, &utf8_char[i++], 1);
 		init_bit_count(&bit_count, utf8_char);
 	}
-	// usleep(100);
 	if (siginfo->si_pid != 0)
 		g_client_pid = siginfo->si_pid;
-	kill(g_client_pid, SIGUSR1);
+	send_kill_signal(g_client_pid, SIGUSR1,
+		"Error: Client is not responding\n");
 }
 
 int	main(void)

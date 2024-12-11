@@ -6,7 +6,7 @@
 /*   By: katakada <katakada@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/05 20:43:32 by katakada          #+#    #+#             */
-/*   Updated: 2024/12/11 15:16:14 by katakada         ###   ########.fr       */
+/*   Updated: 2024/12/11 20:42:58 by katakada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,16 +28,17 @@ static void	bit_8_opelation(int pid, char *message, int i)
 		{
 			usleep(100);
 			time_count++;
-			if (time_count > 10000)
+			if (time_count > 100)
 				error_exit("Error: Server is not responding\n", NULL);
 		}
 		g_server_pid *= -1;
-		// usleep(10);
 		bit = (message[i] >> (8 - bit_count)) & 1;
 		if (bit == 0)
-			kill(pid, SIGUSR1);
-		else if (bit == 1)
-			kill(pid, SIGUSR2);
+			send_kill_signal(pid, SIGUSR1,
+				"Error: Server is not responding. Is PID sure?\n");
+		if (bit == 1)
+			send_kill_signal(pid, SIGUSR2,
+				"Error: Server is not responding. Is PID sure?\n");
 		bit_count++;
 	}
 }
@@ -60,7 +61,6 @@ static void	send_message(int pid, char *message)
 static void	sig_handler(int signum, siginfo_t *siginfo, void *context)
 {
 	(void)context;
-	(void)siginfo;
 	if ((siginfo->si_pid == (g_server_pid * -1) || siginfo->si_pid == 0)
 		&& signum == SIGUSR1)
 		g_server_pid *= -1;
@@ -88,7 +88,7 @@ int	main(int argc, char *argv[])
 	sigaddset(&s_action.sa_mask, SIGUSR1);
 	s_action.sa_flags = SA_SIGINFO;
 	if (sigaction(SIGUSR1, &s_action, NULL) == -1)
-		exit(1);
+		error_exit("Error: failed to set signal handler\n", NULL);
 	send_message(pid, argv[2]);
 	return (0);
 }

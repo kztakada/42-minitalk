@@ -6,7 +6,7 @@
 #    By: katakada <katakada@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/12/01 23:05:17 by katakada          #+#    #+#              #
-#    Updated: 2024/12/10 22:56:41 by katakada         ###   ########.fr        #
+#    Updated: 2024/12/11 20:21:33 by katakada         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -23,26 +23,18 @@ SRCS_PATH		=	src/
 NAME			=	minitalk
 
 SERVER			=	server
-SERVER_OBJ		=	$(OBJS_PATH)server.o
+SERVER_OBJ		=	$(OBJS_PATH)server_bonus.o
 
 CLIENT			=	client
-CLIENT_OBJ		=	$(OBJS_PATH)client.o
+CLIENT_OBJ		=	$(OBJS_PATH)client_bonus.o
 
 UTILS_OBJ		=	$(OBJS_PATH)utils.o
 
 
-ISBOUNS = 0
-
-ifeq ($(ISBOUNS), 1)
-	SERVER_OBJ	=	$(OBJS_PATH)server_bonus.o
-	CLIENT_OBJ	=	$(OBJS_PATH)client_bonus.o
-endif
-
-
 $(NAME): $(SERVER) $(CLIENT)
 
-$(SERVER): $(SERVER_OBJ) $(LIBFT)
-	$(CC) $(CFLAGS) $(SERVER_OBJ) $(LIBFT) -o $(SERVER)
+$(SERVER): $(SERVER_OBJ) $(LIBFT) $(UTILS_OBJ)
+	$(CC) $(CFLAGS) $(SERVER_OBJ) $(UTILS_OBJ) $(LIBFT) -o $(SERVER)
 
 $(CLIENT): $(CLIENT_OBJ) $(LIBFT) $(UTILS_OBJ)
 	$(CC) $(CFLAGS) $(CLIENT_OBJ) $(UTILS_OBJ) $(LIBFT) -o $(CLIENT)
@@ -56,8 +48,7 @@ $(LIBFT):
 
 all:	$(NAME)
 
-bonus:
-	$(MAKE) all ISBOUNS=1
+bonus:	all
 
 clean:
 	make clean -C $(LIBFT_DIR)
