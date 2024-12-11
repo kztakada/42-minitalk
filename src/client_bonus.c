@@ -6,7 +6,7 @@
 /*   By: katakada <katakada@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/05 20:43:32 by katakada          #+#    #+#             */
-/*   Updated: 2024/12/11 20:42:58 by katakada         ###   ########.fr       */
+/*   Updated: 2024/12/11 20:56:13 by katakada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,6 @@ int	main(int argc, char *argv[])
 		error_exit("Error: Message is empty\n", NULL);
 	s_action.sa_sigaction = sig_handler;
 	sigemptyset(&s_action.sa_mask);
-	sigaddset(&s_action.sa_mask, SIGUSR1);
 	s_action.sa_flags = SA_SIGINFO;
 	if (sigaction(SIGUSR1, &s_action, NULL) == -1)
 		error_exit("Error: failed to set signal handler\n", NULL);
