@@ -6,7 +6,7 @@
 /*   By: katakada <katakada@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/05 20:43:38 by katakada          #+#    #+#             */
-/*   Updated: 2024/12/11 20:36:55 by katakada         ###   ########.fr       */
+/*   Updated: 2024/12/12 15:17:53 by katakada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,8 +70,8 @@ static void	sig_handler(int signum, siginfo_t *siginfo, void *context)
 	}
 	if (siginfo->si_pid != 0)
 		g_client_pid = siginfo->si_pid;
-	send_kill_signal(g_client_pid, SIGUSR1,
-		"Error: Client is not responding\n");
+	if (send_kill_signal(g_client_pid, SIGUSR1) == -1)
+		init_bit_count(&bit_count, utf8_char);
 }
 
 int	main(void)
@@ -85,9 +85,9 @@ int	main(void)
 	sigaddset(&s_action.sa_mask, SIGUSR2);
 	s_action.sa_flags = SA_SIGINFO;
 	if (sigaction(SIGUSR1, &s_action, NULL) == -1)
-		exit(1);
+		error_exit("Error: failed to set signal handler\n", NULL);
 	if (sigaction(SIGUSR2, &s_action, NULL) == -1)
-		exit(1);
+		error_exit("Error: failed to set signal handler\n", NULL);
 	while (1)
 		pause();
 	return (0);

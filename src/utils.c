@@ -6,13 +6,13 @@
 /*   By: katakada <katakada@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/10 20:44:18 by katakada          #+#    #+#             */
-/*   Updated: 2024/12/11 20:35:34 by katakada         ###   ########.fr       */
+/*   Updated: 2024/12/12 15:17:19 by katakada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minitalk.h"
 
-void	send_kill_signal(int pid, int signum, char *error_msg)
+int	send_kill_signal(int pid, int signum)
 {
 	int	i;
 
@@ -20,9 +20,10 @@ void	send_kill_signal(int pid, int signum, char *error_msg)
 	while (kill(pid, signum) == -1)
 	{
 		if (i++ > 1000)
-			error_exit(error_msg, NULL);
+			return (-1);
 		usleep(100);
 	}
+	return (0);
 }
 
 void	error_exit(char *format, char *message)
