@@ -6,7 +6,7 @@
 /*   By: katakada <katakada@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/05 20:43:32 by katakada          #+#    #+#             */
-/*   Updated: 2024/12/12 14:20:34 by katakada         ###   ########.fr       */
+/*   Updated: 2024/12/12 15:17:38 by katakada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,31 +14,39 @@
 
 static volatile sig_atomic_t	g_server_pid;
 
+static void	weit_server_respond(void)
+{
+	int	time_count;
+
+	time_count = 0;
+	while (g_server_pid < 0)
+	{
+		usleep(100);
+		time_count++;
+		if (time_count > 100)
+			error_exit("Error: Server is not responding\n", NULL);
+	}
+}
+
 static void	bit_8_opelation(int pid, char msg_char)
 {
 	int	bit_count;
 	int	bit;
-	int	time_count;
 
 	bit_count = 1;
-	time_count = 0;
 	while (bit_count <= 8)
 	{
-		while (g_server_pid < 0)
-		{
-			usleep(100);
-			time_count++;
-			if (time_count > 100)
-				error_exit("Error: Server is not responding\n", NULL);
-		}
+		weit_server_respond();
 		g_server_pid *= -1;
 		bit = (msg_char >> (8 - bit_count)) & 1;
 		if (bit == 0)
-			send_kill_signal(pid, SIGUSR1,
-				"Error: Server is not responding. Is PID sure?\n");
+			if (send_kill_signal(pid, SIGUSR1) == -1)
+				error_exit("Error: Server is not responding. Is PID sure?\n",
+					NULL);
 		if (bit == 1)
-			send_kill_signal(pid, SIGUSR2,
-				"Error: Server is not responding. Is PID sure?\n");
+			if (send_kill_signal(pid, SIGUSR2) == -1)
+				error_exit("Error: Server is not responding. Is PID sure?\n",
+					NULL);
 		bit_count++;
 	}
 }
