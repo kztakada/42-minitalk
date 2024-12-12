@@ -6,7 +6,7 @@
 /*   By: katakada <katakada@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/05 20:43:38 by katakada          #+#    #+#             */
-/*   Updated: 2024/12/11 20:36:55 by katakada         ###   ########.fr       */
+/*   Updated: 2024/12/12 14:26:08 by katakada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,9 +85,9 @@ int	main(void)
 	sigaddset(&s_action.sa_mask, SIGUSR2);
 	s_action.sa_flags = SA_SIGINFO;
 	if (sigaction(SIGUSR1, &s_action, NULL) == -1)
-		exit(1);
+		error_exit("Error: failed to set signal handler\n", NULL);
 	if (sigaction(SIGUSR2, &s_action, NULL) == -1)
-		exit(1);
+		error_exit("Error: failed to set signal handler\n", NULL);
 	while (1)
 		pause();
 	return (0);

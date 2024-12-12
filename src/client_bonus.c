@@ -6,7 +6,7 @@
 /*   By: katakada <katakada@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/05 20:43:32 by katakada          #+#    #+#             */
-/*   Updated: 2024/12/11 20:42:58 by katakada         ###   ########.fr       */
+/*   Updated: 2024/12/12 14:20:34 by katakada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 static volatile sig_atomic_t	g_server_pid;
 
-static void	bit_8_opelation(int pid, char *message, int i)
+static void	bit_8_opelation(int pid, char msg_char)
 {
 	int	bit_count;
 	int	bit;
@@ -32,7 +32,7 @@ static void	bit_8_opelation(int pid, char *message, int i)
 				error_exit("Error: Server is not responding\n", NULL);
 		}
 		g_server_pid *= -1;
-		bit = (message[i] >> (8 - bit_count)) & 1;
+		bit = (msg_char >> (8 - bit_count)) & 1;
 		if (bit == 0)
 			send_kill_signal(pid, SIGUSR1,
 				"Error: Server is not responding. Is PID sure?\n");
@@ -51,7 +51,7 @@ static void	send_message(int pid, char *message)
 	g_server_pid = pid;
 	while (1)
 	{
-		bit_8_opelation(pid, message, i);
+		bit_8_opelation(pid, message[i]);
 		if (message[i] == '\0')
 			break ;
 		i++;
